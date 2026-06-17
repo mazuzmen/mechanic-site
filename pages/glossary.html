@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מילון מונחים — מכונאות</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .glossary-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .glossary-count {
+      font-size: 0.82rem;
+      color: var(--gray);
+    }
+    .glossary-count span { color: var(--orange-light); font-weight: 700; }
+
+    .filter-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .filter-btn {
+      background: var(--dark3);
+      border: 1px solid var(--dark4);
+      color: var(--gray-light);
+      font-size: 0.8rem;
+      padding: 5px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+
+    .glossary-list { display: flex; flex-direction: column; }
+    .glossary-item {
+      padding: 0.9rem 0.5rem;
+      border-bottom: 1px solid var(--dark4);
+      display: grid;
+      grid-template-columns: 1fr 3fr auto;
+      gap: 1rem;
+      align-items: start;
+      transition: background 0.15s;
+    }
+    .glossary-item:hover { background: var(--dark2); border-radius: 6px; }
+    .glossary-item[hidden] { display: none; }
+    .glossary-term {
+      font-weight: 700;
+      color: var(--orange-light);
+      font-size: 0.95rem;
+      padding-top: 1px;
+    }
+    .glossary-en {
+      font-size: 0.75rem;
+      color: var(--gray);
+      direction: ltr;
+      text-align: right;
+      margin-top: 3px;
+    }
+    .glossary-def {
+      font-size: 0.88rem;
+      color: var(--gray-light);
+      line-height: 1.6;
+    }
+    .glossary-cat {
+      font-size: 0.7rem;
+      padding: 2px 9px;
+      border-radius: 12px;
+      white-space: nowrap;
+      align-self: start;
+      margin-top: 2px;
+    }
+    .cat-engine   { background: rgba(232,96,10,0.15);  color: #FF8C3A; }
+    .cat-brakes   { background: rgba(200,40,40,0.15);  color: #FF7070; }
+    .cat-electric { background: rgba(80,140,240,0.15); color: #80AAFF; }
+    .cat-general  { background: rgba(100,180,100,0.15);color: #80C880; }
+    .cat-cooling  { background: rgba(80,200,200,0.15); color: #60D0D0; }
+
+    #no-results {
+      display: none;
+      text-align: center;
+      padding: 3rem 0;
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 580px) {
+      .glossary-item { grid-template-columns: 1fr; }
+      .glossary-cat { align-self: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="logo" href="../index.html">
+      <div class="logo-icon">🔧</div>
+      <div class="logo-text">מכונא<span>ות</span></div>
+    </a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../index.html">ראשי</a></li>
+        <li><a href="engine.html">מנוע</a></li>
+        <li><a href="brakes.html">בלמים</a></li>
+        <li><a href="electrical.html">חשמל</a></li>
+        <li><a href="glossary.html" class="active">מילון מונחים</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="breadcrumb">
+      <a href="../index.html">ראשי</a> ← <span>מילון מונחים</span>
+    </div>
+    <h1>📖 מילון מונחים</h1>
+    <p>מונחים טכניים בעברית עם הסבר ברור — חפש לפי שם או סנן לפי קטגוריה</p>
+  </div>
+
+  <main>
+    <div class="section">
+
+      <div class="glossary-header">
+        <input class="glossary-search" type="search" id="glossarySearch"
+               placeholder="🔍  חפש מונח..." autocomplete="off">
+        <div class="glossary-count">מציג <span id="visibleCount">0</span> מונחים</div>
+      </div>
+
+      <div class="filter-row">
+        <button class="filter-btn active" data-cat="all">הכל</button>
+        <button class="filter-btn" data-cat="engine">⚙️ מנוע</button>
+        <button class="filter-btn" data-cat="brakes">🛑 בלמים</button>
+        <button class="filter-btn" data-cat="electric">⚡ חשמל</button>
+        <button class="filter-btn" data-cat="cooling">🌡️ קירור</button>
+        <button class="filter-btn" data-cat="general">🔧 כללי</button>
+      </div>
+
+      <div class="glossary-list" id="glossaryList">
+
+        <!-- ── מנוע ── -->
+        <div class="glossary-item" data-cat="engine" data-term="בוכנה">
+          <div><div class="glossary-term">בוכנה</div><div class="glossary-en">Piston</div></div>
+          <div class="glossary-def">חלק גלילי הנע הלוך-ושוב בתוך גליל המנוע. ממיר את לחץ גזי הבעירה לתנועה מכנית המועברת לגל הארכובה דרך מוט החיבור.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <div class="glossary-item" data-cat="engine" data-term="גל ארכובה">
+          <div><div class="glossary-term">גל ארכובה</div><div class="glossary-en">Crankshaft</div></div>
+          <div class="glossary-def">ממיר את התנועה הלינארית של הבוכנה לתנועה סיבובית. מחובר לתיבת ההילוכים ובסופו של דבר מניע את הגלגלים.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <div class="glossary-item" data-cat="engine" data-term="מוט חיבור">
+          <div><div class="glossary-term">מוט חיבור</div><div class="glossary-en">Connecting Rod</div></div>
+          <div class="glossary-def">מוט מתכת המחבר את הבוכנה לגל הארכובה. מאפשר את המרת התנועה הלינארית לסיבובית.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <div class="glossary-item" data-cat="engine" data-term="שסתום">
+          <div><div class="glossary-term">שסתום</div><div class="glossary-en">Valve</div></div>
+          <div class="glossary-def">שסתום יניקה נפתח כדי לאפשר כניסת תערובת אוויר-דלק. שסתום פליטה נפתח כדי לשחרר גזי שריפה. שניהם נשלטים על-ידי גל הזיז.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <div class="glossary-item" data-cat="engine" data-term="גל זיז">
+          <div><div class="glossary-term">גל זיז</div><div class="glossary-en">Camshaft</div></div>
+          <div class="glossary-def">גל עם "גבשושיות" (cams) הדוחפות את השסתומים בזמן המדויק. מחובר לגל הארכובה דרך שרשרת עיתוי או רצועה.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <div class="glossary-item" data-cat="engine" data-term="נר הצתה">
+          <div><div class="glossary-term">נר הצתה</div><div class="glossary-en">Spark Plug</div></div>
+          <div class="glossary-def">מצית את תערובת האוויר-דלק הדחוסה בעזרת ניצוץ חשמלי בעיתוי מדויק. מוחלף כל 30,000–100,000 ק"מ בהתאם לסוג.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <div class="glossary-item" data-cat="engine" data-term="יחס דחיסה">
+          <div><div class="glossary-term">יחס דחיסה</div><div class="glossary-en">Compression Ratio</div></div>
+          <div class="glossary-def">היחס בין נפח הגליל כשהבוכנה בתחתית לנפחו כשהבוכנה בראש. מנוע 10:1 דוחס לעשירית הנפח המקורי. יחס גבוה = יעילות גבוהה.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <div class="glossary-item" data-cat="engine" data-term="ראש מנוע">
+          <div><div class="glossary-term">ראש מנוע</div><div class="glossary-en">Cylinder Head</div></div>
+          <div class="glossary-def">המכסה העליון של בלוק המנוע. מכיל את השסתומים, נרות ההצתה, תעלות אוויר ותעלות נוזל קירור.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <div class="glossary-item" data-cat="engine" data-term="טורבו">
+          <div><div class="glossary-term">טורבו</div><div class="glossary-en">Turbocharger</div></div>
+          <div class="glossary-def">מדחס המונע על-ידי גזי פליטה. מגביר את כמות האוויר הנכנסת למנוע, מה שמאפשר שריפת יותר דלק וייצור יותר הספק מאותו נפח מנוע.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <div class="glossary-item" data-cat="engine" data-term="VVT">
+          <div><div class="glossary-term">VVT / VVTi</div><div class="glossary-en">Variable Valve Timing</div></div>
+          <div class="glossary-def">מערכת המשנה את עיתוי פתיחת השסתומים בהתאם לסיבובי המנוע ועומס. משפרת יעילות דלק ומוסיפה הספק.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <div class="glossary-item" data-cat="engine" data-term="סל''ד">
+          <div><div class="glossary-term">סל"ד / RPM</div><div class="glossary-en">Revolutions Per Minute</div></div>
+          <div class="glossary-def">מספר הסיבובים של גל הארכובה בדקה. מנוח = 700–900 סל"ד, נסיעה רגילה = 1500–3000, האצה = עד 6000–8000.</div>
+          <div class="glossary-cat cat-engine">מנוע</div>
+        </div>
+
+        <!-- ── בלמים ── -->
+        <div class="glossary-item" data-cat="brakes" data-term="דיסק בלם">
+          <div><div class="glossary-term">דיסק בלם</div><div class="glossary-en">Brake Rotor / Disc</div></div>
+          <div class="glossary-def">דיסק מתכת עגול המחובר לגלגל ומסתובב איתו. הרפידות לוחצות עליו משני הצדדים ויוצרות חיכוך שמאט את הרכב.</div>
+          <div class="glossary-cat cat-brakes">בלמים</div>
+        </div>
+
+        <div class="glossary-item" data-cat="brakes" data-term="רפידות בלם">
+          <div><div class="glossary-term">רפידות בלם</div><div class="glossary-en">Brake Pads</div></div>
+          <div class="glossary-def">חומר חיכוך המחובר לקליפר. לוחץ על הדיסק ומייצר את כוח הבלימה. בעלות שחיקה ויש להחליפן כל 30,000–70,000 ק"מ.</div>
+          <div class="glossary-cat cat-brakes">בלמים</div>
+        </div>
+
+        <div class="glossary-item" data-cat="brakes" data-term="קליפר">
+          <div><div class="glossary-term">קליפר</div><div class="glossary-en">Brake Caliper</div></div>
+          <div class="glossary-def">"הצבת" המכילה את הרפידות ופיסטון הידראולי. כאשר מופעל לחץ הידראולי, הפיסטון לוחץ את הרפידות אל הדיסק.</div>
+          <div class="glossary-cat cat-brakes">בלמים</div>
+        </div>
+
+        <div class="glossary-item" data-cat="brakes" data-term="ABS">
+          <div><div class="glossary-term">ABS</div><div class="glossary-en">Anti-lock Braking System</div></div>
+          <div class="glossary-def">מונע נעילת גלגלים בבלימת חירום על-ידי שחרור ולחיצה מחזורית של הבלמים עד 20 פעם בשנייה. מאפשר שמירת שליטה על ההגה תוך כדי בלימה.</div>
+          <div class="glossary-cat cat-brakes">בלמים</div>
+        </div>
+
+        <div class="glossary-item" data-cat="brakes" data-term="נוזל בלמים">
+          <div><div class="glossary-term">נוזל בלמים</div><div class="glossary-en">Brake Fluid (DOT)</div></div>
+          <div class="glossary-def">נוזל הידראולי המעביר לחץ בין דוושת הבלם לקליפרים. סופג לחות עם הזמן מה שמוריד את נקודת הרתיחה שלו. יש להחליף כל שנתיים.</div>
+          <div class="glossary-cat cat-brakes">בלמים</div>
+        </div>
+
+        <div class="glossary-item" data-cat="brakes" data-term="ESP">
+          <div><div class="glossary-term">ESP / ESC</div><div class="glossary-en">Electronic Stability Control</div></div>
+          <div class="glossary-def">מערכת יציבות אלקטרונית המבלמת גלגלים בודדים כדי למנוע החלקה. משתמשת בחיישני שיפוע, הגה ומהירות גלגלים.</div>
+          <div class="glossary-cat cat-brakes">בלמים</div>
+        </div>
+
+        <!-- ── חשמל ── -->
+        <div class="glossary-item" data-cat="electric" data-term="אלטרנטור">
+          <div><div class="glossary-term">אלטרנטור</div><div class="glossary-en">Alternator</div></div>
+          <div class="glossary-def">גנרטור המופעל על-ידי רצועה מגל הארכובה. מייצר זרם חילופין (AC), ממיר ל-DC ומספק חשמל לכל הצרכנים ולטעינת הבטריה.</div>
+          <div class="glossary-cat cat-electric">חשמל</div>
+        </div>
+
+        <div class="glossary-item" data-cat="electric" data-term="מצת">
+          <div><div class="glossary-term">מצת</div><div class="glossary-en">Starter Motor</div></div>
+          <div class="glossary-def">מנוע חשמלי קטן המסובב את המנוע בזמן התנעה. צורך זרם גבוה מאוד (150–300A) לשניות קצרות. מתנתק לאחר שהמנוע עולה לפעולה.</div>
+          <div class="glossary-cat cat-electric">חשמל</div>
+        </div>
+
+        <div class="glossary-item" data-cat="electric" data-term="ECU">
+          <div><div class="glossary-term">ECU</div><div class="glossary-en">Engine Control Unit</div></div>
+          <div class="glossary-def">מחשב המנוע — מעבד מאות קריאות חיישנים בשנייה ושולט בהזרקת דלק, עיתוי הצתה, שסתומים ועוד. "המוח" של המנוע המודרני.</div>
+          <div class="glossary-cat cat-electric">חשמל</div>
+        </div>
+
+        <div class="glossary-item" data-cat="electric" data-term="OBD2">
+          <div><div class="glossary-term">OBD2</div><div class="glossary-en">On-Board Diagnostics II</div></div>
+          <div class="glossary-def">שקע אבחון תקני (מתחת ללוח מחוונים) בכל רכב מ-2001. חיבור מחשב אבחון אליו מאפשר קריאת קודי תקלות מכל מערכות הרכב.</div>
+          <div class="glossary-cat cat-electric">חשמל</div>
+        </div>
+
+        <div class="glossary-item" data-cat="electric" data-term="CAN Bus">
+          <div><div class="glossary-term">CAN Bus</div><div class="glossary-en">Controller Area Network</div></div>
+          <div class="glossary-def">רשת תקשורת פנימית המחברת את כל ה-ECU ברכב. מאפשרת העברת מידע בין מאות מחשבים על שני כבלים בלבד.</div>
+          <div class="glossary-cat cat-electric">חשמל</div>
+        </div>
+
+        <div class="glossary-item" data-cat="electric" data-term="פיוז">
+          <div><div class="glossary-term">פיוז / נתיך</div><div class="glossary-en">Fuse</div></div>
+          <div class="glossary-def">רכיב הגנה המנתק מעגל חשמלי כאשר זרם גבוה מדי זורם. נותך ומנתק לפני שהכבלים או הרכיבים ניזוקים. קל וזול להחלפה.</div>
+          <div class="glossary-cat cat-electric">חשמל</div>
+        </div>
+
+        <!-- ── קירור ── -->
+        <div class="glossary-item" data-cat="cooling" data-term="רדיאטור">
+          <div><div class="glossary-term">רדיאטור</div><div class="glossary-en">Radiator</div></div>
+          <div class="glossary-def">רשת של צינורות דקים ופינות קירור שבה נוזל הקירור מאבד חום לאוויר הנכנס מקדמת הרכב. ממוקם בדרך כלל מול הרכב.</div>
+          <div class="glossary-cat cat-cooling">קירור</div>
+        </div>
+
+        <div class="glossary-item" data-cat="cooling" data-term="תרמוסטט">
+          <div><div class="glossary-term">תרמוסטט</div><div class="glossary-en">Thermostat</div></div>
+          <div class="glossary-def">שסתום שנפתח כאשר המנוע מגיע לטמפרטורת עבודה (~85°C). מאפשר לנוזל לזרום לרדיאטור לקירור. מונע קירור יתר בהתנעה קרה.</div>
+          <div class="glossary-cat cat-cooling">קירור</div>
+        </div>
+
+        <div class="glossary-item" data-cat="cooling" data-term="משאבת מים">
+          <div><div class="glossary-term">משאבת מים</div><div class="glossary-en">Water Pump</div></div>
+          <div class="glossary-def">מסיעה את נוזל הקירור בלולאה בין המנוע לרדיאטור. מונעת בדרך כלל על-ידי רצועת העיתוי או הסרפנטינה. כשלונה גורם להתחממות יתר.</div>
+          <div class="glossary-cat cat-cooling">קירור</div>
+        </div>
+
+        <div class="glossary-item" data-cat="cooling" data-term="נוזל קירור">
+          <div><div class="glossary-term">נוזל קירור / אנטיפריז</div><div class="glossary-en">Coolant / Antifreeze</div></div>
+          <div class="glossary-def">תמיסה של מים וגליקול אתילני. נקודת הקיפאון שלה נמוכה מ-0°C ונקודת הרתיחה גבוהה מ-100°C. יש להחליף כל 2–3 שנים.</div>
+          <div class="glossary-cat cat-cooling">קירור</div>
+        </div>
+
+        <!-- ── כללי ── -->
+        <div class="glossary-item" data-cat="general" data-term="מומנט">
+          <div><div class="glossary-term">מומנט</div><div class="glossary-en">Torque</div></div>
+          <div class="glossary-def">כוח סיבובי — "עוצמת הדחיפה". נמדד בניוטון-מטר (Nm). גבוה בסיבובים נמוכים = מנוע "עוצמתי" לנסיעה בעיר. חשוב לגרירה ואצה ראשונית.</div>
+          <div class="glossary-cat cat-general">כללי</div>
+        </div>
+
+        <div class="glossary-item" data-cat="general" data-term="הספק">
+          <div><div class="glossary-term">הספק / כוח סוס</div><div class="glossary-en">Power / Horsepower (HP)</div></div>
+          <div class="glossary-def">קצב ייצור העבודה. שילוב של מומנט וסיבובים. גבוה בסיבובים גבוהים = מנוע "מהיר". נמדד בכוחות סוס (HP) או קילוואט (kW).</div>
+          <div class="glossary-cat cat-general">כללי</div>
+        </div>
+
+        <div class="glossary-item" data-cat="general" data-term="שמן מנוע">
+          <div><div class="glossary-term">שמן מנוע</div><div class="glossary-en">Engine Oil</div></div>
+          <div class="glossary-def">משמן חלקים נעים, מקרר, מנקה ומגן מפני חלודה. מסומן לפי צמיגות (5W-30, 10W-40). יש להחליף כל 10,000–15,000 ק"מ.</div>
+          <div class="glossary-cat cat-general">כללי</div>
+        </div>
+
+        <div class="glossary-item" data-cat="general" data-term="רצועת עיתוי">
+          <div><div class="glossary-term">רצועת עיתוי</div><div class="glossary-en">Timing Belt</div></div>
+          <div class="glossary-def">מסנכרנת בין גל הארכובה לגל הזיז. קריטית — קריעתה עלולה לגרום לנזק חמור למנוע. יש להחליף לפי המלצת יצרן (60,000–120,000 ק"מ).</div>
+          <div class="glossary-cat cat-general">כללי</div>
+        </div>
+
+        <div class="glossary-item" data-cat="general" data-term="סרפנטינה">
+          <div><div class="glossary-term">רצועת סרפנטינה</div><div class="glossary-en">Serpentine Belt</div></div>
+          <div class="glossary-def">רצועה אחת ארוכה המניעה מספר אביזרים: אלטרנטור, משאבת כיוון, מדחס מזגן ולפעמים משאבת מים. יש להחליף כל 80,000–100,000 ק"מ.</div>
+          <div class="glossary-cat cat-general">כללי</div>
+        </div>
+
+        <div class="glossary-item" data-cat="general" data-term="מסנן אוויר">
+          <div><div class="glossary-term">מסנן אוויר</div><div class="glossary-en">Air Filter</div></div>
+          <div class="glossary-def">מסנן את האוויר הנכנס למנוע מאבק, חרקים וחלקיקים. מסנן סתום מגביל זרימת אוויר ופוגע בהספק וצריכת דלק. החלפה כל 15,000–30,000 ק"מ.</div>
+          <div class="glossary-cat cat-general">כללי</div>
+        </div>
+
+      </div>
+
+      <div id="no-results">לא נמצאו מונחים התואמים לחיפוש 🔍</div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>מכונא<span>ות</span> — הנגשת ידע טכני לכולם &nbsp;|&nbsp; נבנה באהבה 🔧</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    const searchInput = document.getElementById('glossarySearch');
+    const items = document.querySelectorAll('.glossary-item');
+    const countEl = document.getElementById('visibleCount');
+    const noResults = document.getElementById('no-results');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    let activeCat = 'all';
+
+    function updateCount() {
+      const visible = [...items].filter(i => !i.hidden).length;
+      countEl.textContent = visible;
+      noResults.style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    function applyFilters() {
+      const query = searchInput.value.trim().toLowerCase();
+      items.forEach(item => {
+        const matchCat = activeCat === 'all' || item.dataset.cat === activeCat;
+        const matchSearch = !query ||
+          item.dataset.term.toLowerCase().includes(query) ||
+          item.querySelector('.glossary-def').textContent.toLowerCase().includes(query) ||
+          item.querySelector('.glossary-en').textContent.toLowerCase().includes(query);
+        item.hidden = !(matchCat && matchSearch);
+      });
+      updateCount();
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function () {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        activeCat = this.dataset.cat;
+        applyFilters();
+      });
+    });
+
+    // Init count
+    applyFilters();
+  </script>
+</body>
+</html>

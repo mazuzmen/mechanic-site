@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4-Stroke Engine Animation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #1a1e28;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: system-ui, sans-serif;
+      color: #ccc;
+    }
+    #sketch-container { display: flex; flex-direction: column; align-items: center; }
+    #controls {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    #controls label { font-size: 13px; color: #aaa; }
+    #controls input[type=range] { width: 120px; }
+    #speedOut { font-size: 13px; font-weight: 600; min-width: 32px; }
+    #pauseBtn {
+      font-size: 13px;
+      padding: 6px 18px;
+      border: 1px solid #555;
+      background: #2a2e3a;
+      color: #ddd;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #pauseBtn:hover { background: #353a4a; }
+  </style>
+</head>
+<body>
+  <div id="sketch-container"></div>
+  <div id="controls">
+    <label>Speed</label>
+    <input type="range" min="0.5" max="5" step="0.1" value="1.5" id="speedSlider">
+    <span id="speedOut">1.5×</span>
+    <button id="pauseBtn">Pause</button>
+  </div>
+
+  <script>
+    const container = document.getElementById('sketch-container');
+    let paused = false, speedMult = 1.5;
+
+    document.getElementById('speedSlider').oninput = function () {
+      speedMult = parseFloat(this.value);
+      document.getElementById('speedOut').textContent = speedMult.toFixed(1) + '×';
+    };
+    document.getElementById('pauseBtn').onclick = function () {
+      paused = !paused;
+      this.textContent = paused ? 'Resume' : 'Pause';
+    };
+
+    new p5(function (p) {
+      const W = 420, H = 580;
+      let angle = 0;
+      const crankR = 43, rodLen = 160, cx = W / 2, cy = 400;
+      const boreW = 90, pistonH = 54;
+      const cylinderTop = 172;
+      const cylinderBot = cy - (rodLen - crankR) + pistonH;
+      const intakeX = cx - 30, exhaustX = cx + 30, valveR = 9;
+      const strokeNames = ['יניקה', 'דחיסה', 'כוח', 'פליטה'];
+      const strokeColors = ['#378ADD', '#BA7517', '#D85A30', '#3B6D11'];
+
+      function pistonYOff(a) {
+        let s = Math.sin(a);
+        return crankR * Math.cos(a) + Math.sqrt(rodLen * rodLen - crankR * crankR * s * s);
+      }
+      function getStroke(a) {
+        let n = ((a % (4 * Math.PI)) + 4 * Math.PI) % (4 * Math.PI);
+        return n < Math.PI ? 0 : n < 2 * Math.PI ? 1 : n < 3 * Math.PI ? 2 : 3;
+      }
+
+      p.setup = function () {
+        let c = p.createCanvas(W, H);
+        c.parent('sketch-container');
+        p.textFont('system-ui, sans-serif');
+      };
+
+      p.draw = function () {
+        if (!paused) angle += 0.025 * speedMult;
+        let stroke = getStroke(angle);
+        let norm = ((angle % (4 * Math.PI)) + 4 * Math.PI) % (4 * Math.PI);
+        let prog = (norm % Math.PI) / Math.PI;
+        p.background(30, 35, 45);
+        let pistonTop = cy - pistonYOff(angle);
+        let iOpen = stroke === 0, eOpen = stroke === 3;
+        drawPipes(iOpen, eOpen);
+        drawCylinder();
+        drawChamberFill(pistonTop, stroke, prog);
+        drawSparkPlug();
+        drawValves(iOpen, eOpen);
+        drawPiston(pistonTop);
+        drawCrankshaft(angle);
+        drawConnectingRod(pistonTop + pistonH / 2, angle);
+        drawLabel(stroke, prog, angle);
+      };
+
+      function drawPipes(iOpen, eOpen) {
+        const hw=14, vertH=105, bendR=22, horizLen=42, topY=cylinderTop-vertH, N=16;
+        p.noStroke();
+        // Intake: L-bend going LEFT
+        { const bx=intakeX-bendR, by=topY+bendR, Ro=bendR+hw, Ri=bendR-hw;
+          p.fill(55,60,75); p.beginShape();
+          p.vertex(intakeX-hw, cylinderTop); p.vertex(intakeX-hw, by);
+          for(let i=0;i<=N;i++){const a=p.map(i,0,N,0,-Math.PI/2); p.vertex(bx+Ri*Math.cos(a), by+Ri*Math.sin(a));}
+          p.vertex(bx-horizLen, topY+hw); p.vertex(bx-horizLen, topY-hw); p.vertex(bx, topY-hw);
+          for(let i=0;i<=N;i++){const a=p.map(i,0,N,-Math.PI/2,0); p.vertex(bx+Ro*Math.cos(a), by+Ro*Math.sin(a));}
+          p.vertex(intakeX+hw, cylinderTop); p.endShape(p.CLOSE); }
+        // Exhaust: L-bend going RIGHT
+        { const bx=exhaustX+bendR, by=topY+bendR, Ro=bendR+hw, Ri=bendR-hw;
+          p.fill(55,60,75); p.beginShape();
+          p.vertex(exhaustX+hw, cylinderTop); p.vertex(exhaustX+hw, by);
+          for(let i=0;i<=N;i++){const a=p.map(i,0,N,Math.PI,3*Math.PI/2); p.vertex(bx+Ri*Math.cos(a), by+Ri*Math.sin(a));}
+          p.vertex(bx+horizLen, topY+hw); p.vertex(bx+horizLen, topY-hw); p.vertex(bx, topY-hw);
+          for(let i=0;i<=N;i++){const a=p.map(i,0,N,3*Math.PI/2,Math.PI); p.vertex(bx+Ro*Math.cos(a), by+Ro*Math.sin(a));}
+          p.vertex(exhaustX-hw, cylinderTop); p.endShape(p.CLOSE); }
+        // End caps
+        p.strokeWeight(1); p.stroke(40,45,58);
+        p.fill(iOpen ? p.color(55,138,221,180) : p.color(40,44,56)); p.ellipse(intakeX-bendR-horizLen, topY, hw*2, 12);
+        p.fill(eOpen ? p.color(59,109,17,180) : p.color(40,44,56)); p.ellipse(exhaustX+bendR+horizLen, topY, hw*2, 12);
+        // ── Flow animations ──
+        // Parametric path: t=0 at open end, t=1 at cylinder entry
+        const hLen=horizLen, aLen=Math.PI/2*bendR, vLen=vertH-bendR, total=hLen+aLen+vLen;
+        const th=hLen/total, ta=(hLen+aLen)/total;
+        function pathPt(t, isInt) {
+          if(isInt) {
+            const bx=intakeX-bendR, by=topY+bendR;
+            if(t<=th){const s=t/th; return[bx-horizLen+s*horizLen, topY];}
+            else if(t<=ta){const s=(t-th)/(ta-th); const a=p.map(s,0,1,-Math.PI/2,0); return[bx+bendR*Math.cos(a), by+bendR*Math.sin(a)];}
+            else{const s=(t-ta)/(1-ta); return[intakeX, topY+bendR+s*vLen];}
+          } else {
+            const bx=exhaustX+bendR, by=topY+bendR;
+            if(t<=th){const s=t/th; return[bx+horizLen-s*horizLen, topY];}
+            else if(t<=ta){const s=(t-th)/(ta-th); const a=p.map(s,0,1,-Math.PI/2,-Math.PI); return[bx+bendR*Math.cos(a), by+bendR*Math.sin(a)];}
+            else{const s=(t-ta)/(1-ta); return[exhaustX, topY+bendR+s*vLen];}
+          }
+        }
+        p.noStroke();
+        // Intake: blue flow moving DOWN (t: 0→1, open end → cylinder)
+        if(iOpen) {
+          for(let i=0;i<7;i++) {
+            const t=((p.frameCount*0.013+i/7)%1);
+            const [px,py]=pathPt(t,true);
+            p.fill(70,150,230, 150+70*Math.sin(t*Math.PI*3));
+            p.ellipse(px,py,8,8);
+          }
+        }
+        // Exhaust: smoky gray flow moving UP (t: 1→0, cylinder → open end)
+        if(eOpen) {
+          for(let i=0;i<7;i++) {
+            const t=1-((p.frameCount*0.010+i/7)%1);
+            const [px,py]=pathPt(t,false);
+            p.fill(168,168,178, 110+60*Math.sin(t*Math.PI*3));
+            p.ellipse(px,py,8,8);
+          }
+        }
+      }
+
+      function drawCylinder() {
+        let wallW = 21; p.noStroke();
+        p.fill(70, 78, 95); p.rect(cx - boreW / 2 - wallW, cylinderTop - 10, wallW, cylinderBot - cylinderTop + 10, 3); p.rect(cx + boreW / 2, cylinderTop - 10, wallW, cylinderBot - cylinderTop + 10, 3); p.rect(cx - boreW / 2 - wallW, cylinderTop - 14, boreW + wallW * 2, 14, 4);
+        p.fill(42, 48, 62); p.rect(cx - boreW / 2, cylinderTop, boreW, cylinderBot - cylinderTop);
+      }
+
+      function drawChamberFill(pistonTop, stroke, prog) {
+        let h = pistonTop - cylinderTop; if (h < 2) return;
+        let col;
+        if (stroke === 0) col = p.color(55, 138, 221, p.lerp(0, 180, prog));
+        else if (stroke === 1) col = p.color(p.lerp(70,80,prog), p.lerp(140,30,prog), p.lerp(230,10,prog), p.lerp(120,255,prog));
+        else if (stroke === 2) col = prog < 0.05 ? p.color(255, 220, 50, 255) : p.color(216, 90, 48, p.lerp(240, 30, prog));
+        else col = p.color(59, 109, 17, p.lerp(150, 0, prog));
+        p.noStroke(); p.fill(col); p.rect(cx - boreW / 2, cylinderTop, boreW, h);
+        if (stroke === 2 && prog < 0.15) {
+          for (let i = 0; i < 5; i++) { p.fill(255, 200 + p.random(55), 0, 200); p.ellipse(cx + p.random(-boreW / 2 + 5, boreW / 2 - 5), cylinderTop + p.random(h), p.random(4, 10), p.random(4, 10)); }
+        }
+      }
+
+      function drawSparkPlug() {
+        let spX = cx, hY = cylinderTop;
+        let threadW = 7, threadH = 8;
+        p.noStroke(); p.fill(125, 133, 148, 255);
+        p.rect(spX - threadW / 2, hY, threadW, threadH, 0, 0, 2, 2);
+        p.stroke(95, 103, 118, 255); p.strokeWeight(0.8);
+        for (let i = 0; i < 3; i++) p.line(spX - threadW / 2, hY + 2 + i * 2.5, spX + threadW / 2, hY + 2 + i * 2.5);
+        p.noStroke(); p.fill(175, 182, 195, 255); p.ellipse(spX, hY + threadH, 4, 4);
+        p.fill(230, 235, 242, 255); p.ellipse(spX, hY + threadH, 2, 2);
+        let hexW = 17, hexH = 7, hexY = hY - hexH;
+        p.noStroke();
+        p.fill(88, 95, 110, 255); p.rect(spX - hexW / 2, hexY, hexW, hexH, 1);
+        p.fill(68, 75, 88, 255); p.rect(spX - hexW / 2, hexY, 3, hexH);
+        p.fill(112, 120, 135, 255); p.rect(spX + hexW / 2 - 3, hexY, 3, hexH);
+        p.fill(98, 105, 120, 255); p.rect(spX - hexW / 2 + 3, hexY, hexW - 6, 2);
+        p.noFill(); p.stroke(55, 62, 75, 255); p.strokeWeight(1);
+        p.rect(spX - hexW / 2, hexY, hexW, hexH, 1);
+        let collarW = 12, collarH = 3, collarY = hexY - collarH;
+        p.noStroke(); p.fill(210, 218, 228, 255);
+        p.rect(spX - collarW / 2, collarY, collarW, collarH, 2, 2, 0, 0);
+        p.fill(230, 236, 244, 255); p.rect(spX - collarW / 2, collarY, collarW, 1, 2, 2, 0, 0);
+        let cerW = 8, cerH = 18, cerY = collarY - cerH;
+        p.noStroke(); p.fill(228, 234, 242, 255);
+        p.rect(spX - cerW / 2, cerY, cerW, cerH, 3, 3, 0, 0);
+        p.fill(242, 246, 252, 255); p.rect(spX - 1, cerY + 2, 3, cerH - 4);
+        let ribW = 12, ribH = 2;
+        for (let ry of [cerY + 3, cerY + 8, cerY + 13]) {
+          p.noStroke(); p.fill(205, 212, 222, 255);
+          p.rect(spX - ribW / 2, ry, ribW, ribH, 1);
+          p.fill(225, 232, 240, 255); p.rect(spX - ribW / 2, ry, ribW, 1, 1, 1, 0, 0);
+          p.noFill(); p.stroke(185, 193, 205, 255); p.strokeWeight(0.5);
+          p.rect(spX - ribW / 2, ry, ribW, ribH, 1);
+        }
+        let tipW = 6, tipH = 5, tipY = cerY - tipH;
+        p.noStroke(); p.fill(218, 224, 234, 255);
+        p.rect(spX - tipW / 2, tipY, tipW, tipH, 2, 2, 0, 0);
+        p.fill(145, 152, 165, 255); p.ellipse(spX, tipY - 1, tipW + 2, 5);
+        p.fill(110, 118, 132, 255); p.ellipse(spX, tipY - 1, 3, 3);
+      }
+
+      function drawOneValve(x, isOpen, isIntake) {
+        const stemW = 4, stemH = 34, openAmt = 8;
+        const headW = valveR * 2.4, headH = 5, tw = valveR * 2.4 * 0.55;
+        const sw = stemW + 7;
+        const offset = isOpen ? openAmt : 0;
+        const headY = cylinderTop + offset;
+        const stemTopY = headY - stemH;
+        const collarOffsetFromStemTop = 6;
+        const collarY = stemTopY + collarOffsetFromStemTop;
+        const collarY_closed = (cylinderTop - stemH) + collarOffsetFromStemTop;
+        const naturalLen = 22;
+        const springBotFixed = collarY_closed + naturalLen;
+        const base = isIntake
+          ? (isOpen ? p.color(55, 138, 221) : p.color(100, 105, 120))
+          : (isOpen ? p.color(59, 109, 17) : p.color(100, 105, 120));
+        const lite = isIntake
+          ? (isOpen ? p.color(130, 185, 240) : p.color(140, 145, 160))
+          : (isOpen ? p.color(100, 170, 100) : p.color(140, 145, 160));
+        const springTopY = collarY;
+        const springSpan = springBotFixed - springTopY;
+        const coils = 5;
+        p.noFill(); p.stroke(178, 185, 200); p.strokeWeight(1.8);
+        const ch = springSpan / coils;
+        for (let i = 0; i < coils; i++) {
+          const y0 = springTopY + i * ch, y1 = y0 + ch * 0.5, y2 = y0 + ch;
+          p.line(x - sw, y0, x + sw, y1);
+          p.line(x + sw, y1, x - sw, y2);
+        }
+        p.noStroke(); p.fill(88, 95, 110, 255);
+        p.rect(x - sw - 2, springBotFixed, sw * 2 + 4, 4, 1);
+        p.noStroke(); p.fill(base);
+        p.rect(x - stemW / 2, stemTopY, stemW, headY - stemTopY, 2);
+        p.fill(lite); p.rect(x - stemW / 2 - 2, stemTopY, stemW + 4, 5, 2);
+        p.fill(base); p.rect(x - sw / 2 - 1, collarY, sw + 2, 3, 1);
+        p.noStroke(); p.fill(base);
+        p.beginShape();
+          p.vertex(x - tw / 2, headY - headH); p.vertex(x + tw / 2, headY - headH);
+          p.vertex(x + headW / 2, headY + headH); p.vertex(x - headW / 2, headY + headH);
+        p.endShape(p.CLOSE);
+        p.fill(lite);
+        p.beginShape();
+          p.vertex(x - tw / 2, headY - headH); p.vertex(x + tw / 2, headY - headH);
+          p.vertex(x + headW / 2, headY - headH + 2); p.vertex(x - headW / 2, headY - headH + 2);
+        p.endShape(p.CLOSE);
+      }
+
+      function drawValves(iOpen, eOpen) {
+        drawOneValve(intakeX, iOpen, true);
+        drawOneValve(exhaustX, eOpen, false);
+      }
+
+      function drawPiston(py) {
+        let pw = boreW - 6; p.noStroke();
+        let ringSectionH = Math.round(pistonH * 0.42); let skirtY = py + ringSectionH; let skirtH = pistonH - ringSectionH;
+        p.fill(158, 170, 185, 255); p.rect(cx - pw / 2, py, pw, pistonH - 10, 4, 4, 0, 0);
+        p.fill(205, 215, 228, 255); p.rect(cx - pw / 4 + 2, py, pw / 2 - 4, pistonH - 10);
+        p.fill(100, 110, 125, 255); p.rect(cx - pw / 2, py, 12, pistonH - 10, 4, 0, 0, 0);
+        p.fill(100, 110, 125, 255); p.rect(cx + pw / 2 - 12, py, 12, pistonH - 10, 0, 4, 0, 0);
+        p.fill(225, 232, 240, 255); p.rect(cx - pw / 2, py, pw, 5, 4, 4, 0, 0);
+        for (let i = 0; i < 3; i++) {
+          let gy = py + 7 + i * 7;
+          p.fill(55, 62, 78, 255); p.rect(cx - pw / 2 - 3, gy, pw + 6, 4);
+          p.fill(175, 185, 200, 255); p.rect(cx - pw / 2 - 3, gy, pw + 6, 2);
+          p.fill(215, 222, 232, 255); p.rect(cx - pw / 2 - 3, gy, pw + 6, 1);
+        }
+        let pkW = pw * 0.62, pkH = pistonH * 0.28, pkX = cx - pkW / 2, pkY = py + pistonH * 0.46;
+        p.fill(75, 84, 98, 255); p.rect(pkX, pkY, pkW, pkH, 5);
+        p.fill(115, 125, 140, 255); p.rect(pkX + 2, pkY + 2, pkW - 4, pkH - 4, 4);
+        p.fill(80, 88, 102, 255); p.ellipse(cx, pkY + pkH / 2, 22, 22);
+        p.fill(50, 56, 68, 255); p.ellipse(cx, pkY + pkH / 2, 11, 11);
+        p.noFill(); p.stroke(60, 68, 82); p.strokeWeight(1); p.rect(pkX, pkY, pkW, pkH, 5);
+        p.noStroke();
+        p.fill(140, 152, 168, 255); p.rect(cx - pw / 2, skirtY, pw * 0.28, skirtH);
+        p.fill(195, 205, 218, 255); p.rect(cx - pw / 2 + 3, skirtY, pw * 0.10, skirtH);
+        p.fill(140, 152, 168, 255); p.rect(cx + pw / 2 - pw * 0.28, skirtY, pw * 0.28, skirtH);
+        p.fill(195, 205, 218, 255); p.rect(cx + pw / 2 - pw * 0.28 + 3, skirtY, pw * 0.10, skirtH);
+        p.fill(30, 35, 45, 255); p.rect(cx - pw / 2 + pw * 0.28, skirtY, pw - pw * 0.56, skirtH);
+        p.fill(42, 48, 62, 255); p.arc(cx, skirtY + 2, pw * 0.44, 16, 0, Math.PI);
+        p.noFill(); p.stroke(72, 82, 98); p.strokeWeight(1); p.rect(cx - pw / 2, py, pw, pistonH - 10, 4, 4, 0, 0);
+      }
+
+      function drawCrankshaft(angle) {
+        let outerD = (crankR + 13) * 2, innerD = (crankR - 13) * 2;
+        p.noStroke(); p.fill(50, 55, 68, 255); p.ellipse(cx, cy, outerD + 8, outerD + 8);
+        p.fill(82, 90, 108, 255); p.ellipse(cx, cy, outerD, outerD);
+        p.push(); p.translate(cx, cy); p.rotate(angle); p.noStroke();
+        p.fill(55, 62, 78, 255); p.ellipse(0, 0, innerD + 8, innerD + 8);
+        p.fill(38, 43, 56, 255); p.ellipse(0, 0, innerD, innerD);
+        p.fill(52, 58, 74, 255); p.arc(0, 0, innerD - 4, innerD - 4, -Math.PI * 0.9, -Math.PI * 0.1);
+        p.fill(55, 62, 80, 255); p.ellipse(0, crankR * 0.55, 28, 22);
+        p.fill(88, 96, 112, 255); p.ellipse(0, -crankR, 18, 18);
+        p.fill(150, 162, 178, 255); p.ellipse(0, -crankR, 14, 14);
+        p.fill(200, 210, 224, 255); p.arc(0, -crankR, 12, 12, Math.PI * 1.1, Math.PI * 1.8);
+        p.fill(58, 66, 82, 255); p.ellipse(0, -crankR, 6, 6);
+        p.pop();
+        p.noStroke(); p.fill(95, 105, 122, 255); p.ellipse(cx, cy, 26, 26);
+        p.fill(120, 132, 150, 255); p.arc(cx, cy, 24, 24, Math.PI * 1.1, Math.PI * 1.8);
+        p.fill(48, 54, 68, 255); p.ellipse(cx, cy, 12, 12);
+      }
+
+      function drawConnectingRod(pinY, angle) {
+        let cpX = cx + crankR * Math.sin(angle), cpY = cy - crankR * Math.cos(angle);
+        let dx = cpX - cx, dy = cpY - pinY, len = Math.sqrt(dx * dx + dy * dy), nx = -dy / len, ny = dx / len;
+        function strip(o1, o2, r, g, b) {
+          p.noStroke(); p.fill(r, g, b, 255); p.beginShape();
+          p.vertex(cx + nx * o1, pinY + ny * o1); p.vertex(cx + nx * o2, pinY + ny * o2);
+          p.vertex(cpX + nx * o2, cpY + ny * o2); p.vertex(cpX + nx * o1, cpY + ny * o1);
+          p.endShape(p.CLOSE);
+        }
+        strip(-7, 7, 80, 90, 108); strip(-5.6, 5.6, 138, 150, 168);
+        strip(-4.2, 1.4, 168, 180, 196); strip(-3.5, 0, 198, 210, 225);
+        p.noStroke();
+        p.fill(88, 96, 112, 255); p.ellipse(cx, pinY, 20, 20);
+        p.fill(150, 162, 178, 255); p.ellipse(cx, pinY, 15, 15);
+        p.fill(200, 210, 224, 255); p.arc(cx, pinY, 13, 13, Math.PI * 1.1, Math.PI * 1.8);
+        p.fill(58, 66, 82, 255); p.ellipse(cx, pinY, 6, 6);
+        p.fill(88, 96, 112, 255); p.ellipse(cpX, cpY, 20, 20);
+        p.fill(150, 162, 178, 255); p.ellipse(cpX, cpY, 15, 15);
+        p.fill(200, 210, 224, 255); p.arc(cpX, cpY, 13, 13, Math.PI * 1.1, Math.PI * 1.8);
+        p.fill(58, 66, 82, 255); p.ellipse(cpX, cpY, 6, 6);
+      }
+
+      function drawLabel(stroke, prog, angle) {
+        let norm = ((angle % (4 * Math.PI)) + 4 * Math.PI) % (4 * Math.PI), cp = norm / (4 * Math.PI);
+        p.noStroke(); p.fill(p.color(strokeColors[stroke])); p.rect(cx - 95, H - 62, 190, 40, 8);
+        p.fill(255, 255, 255, 255); p.textAlign(p.CENTER, p.CENTER); p.textSize(18); p.textStyle(p.BOLD);
+        p.text((stroke + 1) + '. ' + strokeNames[stroke], cx, H - 42);
+        p.noStroke(); p.fill(50, 55, 70); p.rect(cx - 95, H - 18, 190, 6, 3);
+        p.fill(p.color(strokeColors[stroke])); p.rect(cx - 95, H - 18, 190 * cp, 6, 3);
+        p.textSize(10); p.fill(130, 135, 150, 255); p.textStyle(p.NORMAL); p.textAlign(p.RIGHT, p.CENTER);
+        p.text('θ = ' + Math.round((angle * 180 / Math.PI) % 720) + '°', W - 12, H - 42);
+      }
+
+    }, container);
+  </script>
+</body>
+</html>

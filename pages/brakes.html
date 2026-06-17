@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בלמים — מכונאות</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-content h2 {
+      font-size: 1.2rem;
+      margin: 2rem 0 0.75rem;
+      color: var(--white);
+    }
+    .article-content h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 1em;
+      background: var(--orange);
+      border-radius: 2px;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    .article-content p {
+      font-size: 0.92rem;
+      color: var(--gray-light);
+      margin-bottom: 1rem;
+      line-height: 1.75;
+    }
+    .article-content ul {
+      margin: 0.5rem 0 1rem 0;
+      padding-right: 1.5rem;
+    }
+    .article-content li {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+    .info-box {
+      background: rgba(232,96,10,0.08);
+      border: 1px solid rgba(232,96,10,0.25);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 0.88rem;
+      color: var(--gray-light);
+    }
+    .info-box strong { color: var(--orange-light); }
+
+    .parts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .part-card {
+      background: var(--dark2);
+      border: 1px solid var(--dark4);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .part-card .icon { font-size: 1.8rem; }
+    .part-card h3 { font-size: 0.95rem; font-weight: 700; }
+    .part-card p { font-size: 0.82rem; color: var(--gray); line-height: 1.55; }
+
+    .warning-box {
+      background: rgba(200,40,40,0.08);
+      border: 1px solid rgba(200,40,40,0.3);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 0.88rem;
+      color: var(--gray-light);
+    }
+    .warning-box strong { color: #ff6b6b; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="logo" href="../index.html">
+      <div class="logo-icon">🔧</div>
+      <div class="logo-text">מכונא<span>ות</span></div>
+    </a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../index.html">ראשי</a></li>
+        <li><a href="engine.html">מנוע</a></li>
+        <li><a href="brakes.html" class="active">בלמים</a></li>
+        <li><a href="electrical.html">חשמל</a></li>
+        <li><a href="glossary.html">מילון מונחים</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="breadcrumb">
+      <a href="../index.html">ראשי</a> ← <span>בלמים</span>
+    </div>
+    <h1>🛑 מערכת הבלמים</h1>
+    <p>כיצד הרכב עוצר — דיסקים, תופים, הידראוליקה ו-ABS</p>
+  </div>
+
+  <main>
+    <div class="section">
+      <div class="article-content">
+
+        <h2>עיקרון הפעולה</h2>
+        <p>
+          מערכת הבלמים ממירה אנרגיה קינטית (תנועה) לחום באמצעות חיכוך.
+          כאשר דורכים על דוושת הבלם, לחץ הידראולי מועבר דרך נוזל הבלמים לבולמי הבלם (קליפרים),
+          שלוחצים את רפידות הבלם אל הדיסק הסובב ועוצרים את גלגל הרכב.
+        </p>
+
+        <div class="info-box">
+          <strong>למה הידראוליקה?</strong><br>
+          נוזל אינו נדחס — לחץ שמופעל בנקודה אחת מועבר ב-100% לכל הנקודות האחרות במערכת.
+          זה מאפשר להפעיל כוח עצום על הבלמים בעזרת לחץ רגל קל יחסית.
+        </div>
+
+        <h2>חלקי המערכת</h2>
+      </div>
+
+      <div class="parts-grid">
+        <div class="part-card">
+          <div class="icon">🦶</div>
+          <h3>דוושת הבלם</h3>
+          <p>ממנף מכני שמגביר את כוח הרגל ומעביר אותו למגבר הוואקום.</p>
+        </div>
+        <div class="part-card">
+          <div class="icon">💪</div>
+          <h3>מגבר וואקום (Booster)</h3>
+          <p>משתמש בוואקום מהמנוע כדי להכפיל את כוח הדריכה פי 2–4, ומפחית עייפות בנסיעה.</p>
+        </div>
+        <div class="part-card">
+          <div class="icon">🫙</div>
+          <h3>צילינדר ראשי (Master Cylinder)</h3>
+          <p>הופך את כוח הדריכה ללחץ הידראולי ומפיץ אותו לארבעת הגלגלים.</p>
+        </div>
+        <div class="part-card">
+          <div class="icon">💧</div>
+          <h3>נוזל בלמים</h3>
+          <p>נוזל הידראולי המעביר את הלחץ. חייב להיות עמיד בטמפרטורות גבוהות מאוד (DOT 4 עד 230°C).</p>
+        </div>
+        <div class="part-card">
+          <div class="icon">⭕</div>
+          <h3>דיסק בלם (Rotor)</h3>
+          <p>מתכת עגולה שמסתובבת עם הגלגל. הרפידות לוחצות עליה ויוצרות חיכוך.</p>
+        </div>
+        <div class="part-card">
+          <div class="icon">🗜️</div>
+          <h3>קליפר + רפידות</h3>
+          <p>הקליפר הוא "הצבת" שלוחצת את הרפידות על הדיסק משני הצדדים.</p>
+        </div>
+      </div>
+
+      <div class="article-content">
+
+        <h2>בלמי דיסק vs. בלמי תוף</h2>
+        <p>
+          <strong style="color:var(--orange-light)">בלמי דיסק</strong> — נפוצים בגלגלים קדמיים (ולעיתים גם אחוריים).
+          הדיסק חשוף לאוויר, מתקרר מהר, ומאפשר בלימה חזקה ועקבית. קל לבדוק את רמת שחיקת הרפידות.
+        </p>
+        <p>
+          <strong style="color:var(--orange-light)">בלמי תוף</strong> — נפוצים בגלגלים אחוריים של רכבים זולים יותר.
+          הרפידות לוחצות מבפנים אל תוף מסתובב. עלות ייצור נמוכה יותר, אך בלימה פחות עקבית בחום.
+        </p>
+
+        <h2>מערכת ABS</h2>
+        <p>
+          ABS (Anti-lock Braking System) מונעת מהגלגלים "להינעל" בבלימת חירום.
+          חיישנים על כל גלגל מודדים מהירות סיבוב. כאשר גלגל עומד להינעל,
+          המערכת מרפה ומהדקת את הבלם כ-10–20 פעמים בשנייה — מהר מכדי שנוכל לחוש.
+        </p>
+
+        <div class="info-box">
+          <strong>מה מרגישים כש-ABS פועל?</strong><br>
+          רטט בדוושת הבלם וקול "טיק-טיק" — זה תקין! המערכת עובדת. אל תרפה מהדוושה — המשך ללחוץ בכוח.
+        </div>
+
+        <h2>מתי להחליף רפידות?</h2>
+        <ul>
+          <li>עובי רפידה פחות מ-3 מ"מ</li>
+          <li>שריקה או חריקה בבלימה (נשמע קשה ומתכתי)</li>
+          <li>רטט בהגה בעת בלימה (מעיד על דיסק מעוות)</li>
+          <li>הרכב נמשך לצד אחד בבלימה</li>
+          <li>מחוג לחץ הבלמים יורד מתחת לקו המינימום</li>
+        </ul>
+
+        <div class="warning-box">
+          <strong>⚠️ אזהרה:</strong> לעולם אל תנסה לנסוע עם תחושת בלימה "ספוגית" או רכה מדי — עשוי להצביע על אוויר בצינורות הבלמים או נוזל בלמים נמוך. זהו מצב מסוכן.
+        </div>
+
+        <h2>תחזוקה שוטפת</h2>
+        <ul>
+          <li>בדיקת רמת נוזל הבלמים — כל 6 חודשים</li>
+          <li>החלפת נוזל בלמים — כל 2 שנים (הנוזל סופג לחות ומוריד את נקודת הרתיחה)</li>
+          <li>בדיקת עובי רפידות — בכל טיפול שגרתי</li>
+          <li>בדיקת דיסקים — חפש חריצים עמוקים או דקות מינימלית</li>
+        </ul>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>מכונא<span>ות</span> — הנגשת ידע טכני לכולם &nbsp;|&nbsp; נבנה באהבה 🔧</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

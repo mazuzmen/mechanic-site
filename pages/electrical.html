@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מערכת חשמל — מכונאות</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-content h2 {
+      font-size: 1.2rem;
+      margin: 2rem 0 0.75rem;
+      color: var(--white);
+    }
+    .article-content h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 1em;
+      background: var(--orange);
+      border-radius: 2px;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    .article-content p {
+      font-size: 0.92rem;
+      color: var(--gray-light);
+      margin-bottom: 1rem;
+      line-height: 1.75;
+    }
+    .article-content ul {
+      margin: 0.5rem 0 1rem 0;
+      padding-right: 1.5rem;
+    }
+    .article-content li {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+    .info-box {
+      background: rgba(232,96,10,0.08);
+      border: 1px solid rgba(232,96,10,0.25);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 0.88rem;
+      color: var(--gray-light);
+    }
+    .info-box strong { color: var(--orange-light); }
+    .warning-box {
+      background: rgba(200,40,40,0.08);
+      border: 1px solid rgba(200,40,40,0.3);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 0.88rem;
+      color: var(--gray-light);
+    }
+    .warning-box strong { color: #ff6b6b; }
+
+    .circuit-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .circuit-card {
+      background: var(--dark2);
+      border: 1px solid var(--dark4);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .circuit-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--orange);
+      opacity: 0.6;
+    }
+    .circuit-card .icon { font-size: 1.6rem; }
+    .circuit-card h3 { font-size: 0.95rem; font-weight: 700; }
+    .circuit-card p { font-size: 0.82rem; color: var(--gray); line-height: 1.55; }
+
+    .voltage-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.88rem;
+    }
+    .voltage-table th {
+      background: var(--dark3);
+      color: var(--orange-light);
+      padding: 10px 14px;
+      text-align: right;
+      font-weight: 700;
+      border-bottom: 1px solid var(--dark4);
+    }
+    .voltage-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--dark4);
+      color: var(--gray-light);
+    }
+    .voltage-table tr:hover td { background: var(--dark3); }
+    .good { color: #5cb85c; font-weight: 700; }
+    .warn { color: #f0ad4e; font-weight: 700; }
+    .bad  { color: #d9534f; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="logo" href="../index.html">
+      <div class="logo-icon">🔧</div>
+      <div class="logo-text">מכונא<span>ות</span></div>
+    </a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="../index.html">ראשי</a></li>
+        <li><a href="engine.html">מנוע</a></li>
+        <li><a href="brakes.html">בלמים</a></li>
+        <li><a href="electrical.html" class="active">חשמל</a></li>
+        <li><a href="glossary.html">מילון מונחים</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="breadcrumb">
+      <a href="../index.html">ראשי</a> ← <span>מערכת חשמל</span>
+    </div>
+    <h1>⚡ מערכת החשמל</h1>
+    <p>בטריה, אלטרנטור, מצת ומעגלים — הזרם שמחייה את הרכב</p>
+  </div>
+
+  <main>
+    <div class="section">
+
+      <div class="article-content">
+        <h2>שלושת השחקנים הראשיים</h2>
+        <p>
+          מערכת החשמל של הרכב מתבססת על שלושה רכיבים שפועלים יחד:
+          הבטריה מספקת אנרגיה להתנעה, המצת מפעיל את המנוע, והאלטרנטור טוען את הבטריה בזמן נסיעה
+          ומספק חשמל לכל הצרכנים.
+        </p>
+      </div>
+
+      <div class="circuit-row">
+        <div class="circuit-card">
+          <div class="icon">🔋</div>
+          <h3>בטריה (Battery)</h3>
+          <p>מאגר האנרגיה. מספקת זרם גבוה להתנעה ומשמשת כ"מאגר חיץ" כשהביקוש גבוה מהייצור.</p>
+        </div>
+        <div class="circuit-card">
+          <div class="icon">⚙️</div>
+          <h3>מצת (Starter Motor)</h3>
+          <p>מנוע חשמלי קטן שמסובב את המנוע עד שהוא מגיע לסיבובים מינימליים לבעירה עצמאית.</p>
+        </div>
+        <div class="circuit-card">
+          <div class="icon">🔌</div>
+          <h3>אלטרנטור (Alternator)</h3>
+          <p>גנרטור המונע על-ידי המנוע דרך רצועה. מייצר חשמל AC, ממיר ל-DC וטוען את הבטריה.</p>
+        </div>
+        <div class="circuit-card">
+          <div class="icon">🛡️</div>
+          <h3>ממסר ופיוזים</h3>
+          <p>מגנים על המעגלים מפני עומס יתר. כל מעגל מוגן בנפרד — תקלה במעגל אחד לא משתקת את כל הרכב.</p>
+        </div>
+      </div>
+
+      <div class="article-content">
+
+        <h2>איך ההתנעה עובדת?</h2>
+        <p>
+          כאשר מסובבים את מפתח ההתנעה (או לוחצים על כפתור START):
+        </p>
+        <ul>
+          <li>המפתח סוגר מעגל חשמלי שמפעיל ממסר התנעה</li>
+          <li>הממסר מעביר זרם גבוה (עד 200A) מהבטריה למצת</li>
+          <li>המצת מסובב את גל הארכובה דרך גלגל שיניים קטן</li>
+          <li>כשהמנוע מגיע ל-~200 סל"ד הבעירה מתחילה</li>
+          <li>המצת מתנתק אוטומטית — גלגל השיניים נסוג</li>
+          <li>האלטרנטור מתחיל לייצר חשמל ולטעון את הבטריה</li>
+        </ul>
+
+        <h2>מתחים תקינים — מה לבדוק עם מודד</h2>
+      </div>
+
+      <table class="voltage-table">
+        <thead>
+          <tr>
+            <th>מצב</th>
+            <th>מתח תקין</th>
+            <th>הערה</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>בטריה — מנוע כבוי</td>
+            <td class="good">12.6 – 12.8V</td>
+            <td>טעינה מלאה</td>
+          </tr>
+          <tr>
+            <td>בטריה — מנוע כבוי</td>
+            <td class="warn">12.0 – 12.4V</td>
+            <td>טעינה חלקית — בדוק</td>
+          </tr>
+          <tr>
+            <td>בטריה — מנוע כבוי</td>
+            <td class="bad">מתחת ל-12.0V</td>
+            <td>בטריה חלשה / פגומה</td>
+          </tr>
+          <tr>
+            <td>אלטרנטור — מנוע דולק (סרק)</td>
+            <td class="good">13.8 – 14.4V</td>
+            <td>טעינה תקינה</td>
+          </tr>
+          <tr>
+            <td>אלטרנטור — מנוע דולק</td>
+            <td class="bad">מתחת ל-13.5V</td>
+            <td>אלטרנטור לא טוען — בדוק רצועה</td>
+          </tr>
+          <tr>
+            <td>אלטרנטור — מנוע דולק</td>
+            <td class="bad">מעל 14.8V</td>
+            <td>טעינת יתר — מסוכן לבטריה</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="article-content">
+
+        <h2>סימנים לתקלה בחשמל</h2>
+        <ul>
+          <li>נורת הבטריה דולקת לוח המחוונים</li>
+          <li>המנוע מתקשה להיניע בעיקר בקור</li>
+          <li>האורות נחלשים בעת לחץ על הבלם</li>
+          <li>קול "קליק" יחיד בעת ניסיון התנעה (מצת מגיע לבטריה ריקה)</li>
+          <li>ריח ביצים (גופרית) מאזור הבטריה</li>
+          <li>ציוד חשמלי (חלונות, מוזיקה) עובד לאט או לא עובד</li>
+        </ul>
+
+        <div class="info-box">
+          <strong>חיי בטריה ממוצעים:</strong> 3–5 שנים. בישראל, בגלל הקיץ החם, לרוב 3–4 שנים.
+          חום גורם לאידוי נוזל אלקטרוליט ופגיעה בתאים הפנימיים.
+        </div>
+
+        <h2>CAN Bus — "עמוד השדרה" הדיגיטלי</h2>
+        <p>
+          ברכבים מודרניים, מאות חיישנים ובקרות (ECU) מתקשרים ביניהם דרך רשת דיגיטלית אחת
+          בשם CAN Bus (Controller Area Network).
+          במקום מאות כבלים נפרדים, כל המידע עובר על שני כבלים בלבד בפרוטוקול דיגיטלי.
+          זו הסיבה שתקלות מודרניות דורשות מחשב אבחון (OBD2).
+        </p>
+
+        <div class="info-box">
+          <strong>מה זה OBD2?</strong><br>
+          כל רכב מ-2001 ומעלה (בישראל) חייב לכלול שקע OBD2 (בדרך כלל מתחת ללוח המחוונים).
+          חיבור מחשב אבחון לשקע זה מאפשר לקרוא קודי תקלות מכל מערכות הרכב.
+        </div>
+
+        <h2>טיפים לשמירה על מערכת החשמל</h2>
+        <ul>
+          <li>אל תשאיר אורות פנימיים או חיצוניים דלוקים בחניה ממושכת</li>
+          <li>בדוק את חיבורי הבטריה — חמצון (אבקה לבנה/כחולה) מגביר התנגדות ומחליש התנעה</li>
+          <li>אם הרכב לא נוסע שבועות — שקול טוען בטריה חכם (Battery Tender)</li>
+          <li>בדיקת בטריה חינמית — ברוב מוסכי "סדנה מהירה" וחנויות חלפים</li>
+          <li>החלפת רצועת אלטרנטור כל 60,000–80,000 ק"מ</li>
+        </ul>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>מכונא<span>ות</span> — הנגשת ידע טכני לכולם &nbsp;|&nbsp; נבנה באהבה 🔧</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
