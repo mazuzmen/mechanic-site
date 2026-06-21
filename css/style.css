@@ -191,6 +191,8 @@ img { max-width: 100%; display: block; }
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  height: 220px;
+  overflow: hidden;
   transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
   cursor: pointer;
   text-decoration: none;
@@ -201,6 +203,210 @@ img { max-width: 100%; display: block; }
   transform: translateY(-3px);
   box-shadow: 0 8px 24px rgba(232,96,10,0.18);
   color: inherit;
+}
+.system-card--glossary {
+  background-image: url('../images/glossary.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--glossary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--glossary > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--exhaust {
+  background-image: url('../images/exhaust.webp');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--exhaust::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--exhaust > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--gearbox {
+  background-image: url('../images/gearbox.avif');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--gearbox::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--gearbox > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--fuel {
+  background-image: url('../images/carburetor.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--fuel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--fuel > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--cooling {
+  background-image: url('../images/radiator.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--cooling::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--cooling > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--electrical {
+  background-image: url('../images/electrical.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--electrical::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--electrical > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--brakes {
+  background-image: url('../images/brakes.webp');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--brakes::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--brakes > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--fuel-engine {
+  background-image: url('../images/fuel-engine.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--fuel-engine::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--fuel-engine > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--ignition {
+  background-image: url('../images/ignition.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--ignition::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--ignition > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--timing {
+  background-image: url('../images/timing-system.webp');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--timing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--timing > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--starter {
+  background-image: url('../images/starter.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--starter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--starter > * {
+  position: relative;
+  z-index: 1;
+}
+.system-card--engine {
+  background-image: url('../images/engine-venom.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.system-card--engine::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+.system-card--engine > * {
+  position: relative;
+  z-index: 1;
 }
 .card-icon {
   width: 48px;

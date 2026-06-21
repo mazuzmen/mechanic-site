@@ -1,0 +1,117 @@
+<svg viewBox="0 0 720 680" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e8860a"/>
+    </marker>
+    <marker id="arrow-left" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto">
+      <path d="M8,0 L8,6 L0,3 z" fill="#e8860a"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="720" height="680" fill="#1e2330"/>
+
+  <!-- ===== CYLINDER ===== -->
+  <!-- Left wall -->
+  <rect x="264" y="186" width="21" height="171" rx="3" fill="#464e5f"/>
+  <!-- Right wall -->
+  <rect x="375" y="186" width="21" height="171" rx="3" fill="#464e5f"/>
+  <!-- Top wall (solid, no openings) -->
+  <rect x="264" y="186" width="132" height="14" rx="3" fill="#464e5f"/>
+  <!-- Cylinder interior background -->
+  <rect x="285" y="200" width="90" height="157" fill="#2a303e"/>
+
+  <!-- ===== PISTON (at mid-stroke, pistonTop≈266) ===== -->
+  <!-- Main body -->
+  <rect x="288" y="266" width="84" height="44" rx="4" fill="#9eaab9"/>
+  <!-- Center highlight -->
+  <rect x="308" y="266" width="38" height="44" fill="#cdd7e4"/>
+  <!-- Side shadows -->
+  <rect x="288" y="266" width="12" height="44" rx="4" fill="#646e7d"/>
+  <rect x="360" y="266" width="12" height="44" rx="4" fill="#646e7d"/>
+  <!-- Top shine -->
+  <rect x="288" y="266" width="84" height="5" rx="4" fill="#e1e8f0"/>
+  <!-- Piston rings (3 rings) -->
+  <rect x="285" y="273" width="90" height="4" fill="#373e4e"/>
+  <rect x="285" y="273" width="90" height="2" fill="#afb9c8"/>
+  <rect x="285" y="280" width="90" height="4" fill="#373e4e"/>
+  <rect x="285" y="280" width="90" height="2" fill="#afb9c8"/>
+  <rect x="285" y="287" width="90" height="4" fill="#373e4e"/>
+  <rect x="285" y="287" width="90" height="2" fill="#afb9c8"/>
+  <!-- Piston skirt -->
+  <rect x="288" y="310" width="22" height="10" fill="#8c98a8"/>
+  <rect x="350" y="310" width="22" height="10" fill="#8c98a8"/>
+  <rect x="310" y="310" width="40" height="10" fill="#1e2330"/>
+
+  <!-- Piston pin boss area -->
+  <rect x="304" y="295" width="52" height="15" rx="5" fill="#4b5462"/>
+  <rect x="306" y="297" width="48" height="11" rx="4" fill="#737d8c"/>
+  <!-- Wrist pin (circle) -->
+  <circle cx="330" cy="302" r="11" fill="#505868"/>
+  <circle cx="330" cy="302" r="8" fill="#96a2b2"/>
+  <circle cx="330" cy="302" r="3" fill="#3a424f"/>
+
+  <!-- ===== CONNECTING ROD ===== -->
+  <!-- ===== CRANKSHAFT (drawn first, behind rod) ===== -->
+  <circle cx="330" cy="440" r="56" fill="#32374a"/>
+  <circle cx="330" cy="440" r="52" fill="#525a6c"/>
+  <circle cx="330" cy="440" r="36" fill="#373e52"/>
+  <circle cx="330" cy="440" r="32" fill="#262c3c"/>
+  <ellipse cx="330" cy="464" rx="14" ry="11" fill="#373e50"/>
+  <circle cx="373" cy="440" r="9" fill="#585f70"/>
+  <circle cx="373" cy="440" r="7" fill="#96a2b2"/>
+  <circle cx="373" cy="440" r="3" fill="#3a424f"/>
+  <circle cx="330" cy="440" r="13" fill="#5f6978"/>
+  <circle cx="330" cy="440" r="10" fill="#78869a"/>
+  <circle cx="330" cy="440" r="5" fill="#2f3748"/>
+
+  <!-- ===== CONNECTING ROD (drawn on top of crankshaft) ===== -->
+  <line x1="330" y1="302" x2="373" y2="440" stroke="#505868" stroke-width="14"/>
+  <line x1="330" y1="302" x2="373" y2="440" stroke="#8a96a8" stroke-width="10"/>
+  <line x1="330" y1="302" x2="373" y2="440" stroke="#a8b4c4" stroke-width="6"/>
+  <circle cx="373" cy="440" r="12" fill="#585f70"/>
+  <circle cx="373" cy="440" r="9" fill="#96a2b2"/>
+  <circle cx="373" cy="440" r="4" fill="#3a424f"/>
+  <circle cx="330" cy="302" r="10" fill="#585f70"/>
+  <circle cx="330" cy="302" r="7" fill="#96a2b2"/>
+
+  <!-- ===== LABEL LINES & ARROWS (orange) ===== -->
+
+  <!-- צילינדר — right, points to right wall -->
+  <line x1="500" y1="225" x2="397" y2="215" stroke="#e8860a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- בוכנה — left, points to piston body -->
+  <line x1="155" y1="285" x2="287" y2="285" stroke="#e8860a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- מוט חיבור — left, points to connecting rod -->
+  <line x1="155" y1="370" x2="345" y2="370" stroke="#e8860a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- גל ארכובה — left, points to crankshaft -->
+  <line x1="155" y1="440" x2="277" y2="440" stroke="#e8860a" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ===== LABEL BOXES & TEXT ===== -->
+  <style>
+    .lbl { font-family: Arial, Helvetica, sans-serif; font-size: 15px; fill: #e8e8f0; direction: rtl; }
+    .lbl-sub { font-family: Arial, Helvetica, sans-serif; font-size: 11px; fill: #8a8fa8; direction: rtl; }
+  </style>
+
+  <!-- Right side labels -->
+  <!-- צילינדר -->
+  <rect x="502" y="210" width="135" height="26" rx="5" fill="#252b3a" stroke="#3a3f52" stroke-width="1"/>
+  <text x="569" y="228" text-anchor="middle" class="lbl">צילינדר</text>
+
+  <!-- Left side labels -->
+  <!-- בוכנה -->
+  <rect x="20" y="272" width="130" height="26" rx="5" fill="#252b3a" stroke="#3a3f52" stroke-width="1"/>
+  <text x="85" y="290" text-anchor="middle" class="lbl">בוכנה</text>
+
+  <!-- מוט חיבור -->
+  <rect x="20" y="357" width="130" height="42" rx="5" fill="#252b3a" stroke="#3a3f52" stroke-width="1"/>
+  <text x="85" y="375" text-anchor="middle" class="lbl">מוט חיבור</text>
+  <text x="85" y="392" text-anchor="middle" class="lbl-sub">(טלטל)</text>
+
+  <!-- גל ארכובה -->
+  <rect x="20" y="427" width="130" height="42" rx="5" fill="#252b3a" stroke="#3a3f52" stroke-width="1"/>
+  <text x="85" y="445" text-anchor="middle" class="lbl">גל ארכובה</text>
+  <text x="85" y="462" text-anchor="middle" class="lbl-sub">(קראנק)</text>
+
+  <!-- Title -->
+  <text x="360" y="620" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#8a8fa8">חלקי הצילינדר — חתך רוחבי</text>
+</svg>

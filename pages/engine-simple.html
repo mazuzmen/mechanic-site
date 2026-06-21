@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>אנימציה פשוטה — בוכנה וצילינדר</title>
+  <style>
+    body { background: #1e2330; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; font-family: system-ui, sans-serif; }
+    .anim-wrapper {
+      background: #1e2330;
+      border: 1px solid #3a3f52;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .anim-controls {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      padding: 14px 1rem 0;
+      flex-wrap: wrap;
+    }
+    .anim-controls label { font-size: 13px; color: #8a8fa8; }
+    .anim-controls input[type=range] { width: 120px; }
+    #speedOut { font-size: 13px; font-weight: 600; min-width: 32px; color: #fff; }
+    #pauseBtn {
+      font-size: 13px; padding: 6px 18px;
+      border: 1px solid #3a3f52; background: #252b3a;
+      color: #c0c5d8; border-radius: 6px; cursor: pointer;
+    }
+    #pauseBtn:hover { background: #3a3f52; }
+    .anim-caption {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid #3a3f52;
+      text-align: center;
+    }
+    .anim-caption .title { font-weight: 700; color: #e8e8f0; }
+    .anim-caption .sub { font-size: 0.82rem; color: #8a8fa8; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="anim-wrapper">
+    <div id="sketch-container"></div>
+    <div class="anim-controls">
+      <label>מהירות</label>
+      <input type="range" min="0.5" max="5" step="0.1" value="1.5" id="speedSlider">
+      <span id="speedOut">1.5×</span>
+      <button id="pauseBtn">עצור</button>
+    </div>
+    <div class="anim-caption">
+      <div class="title">בוכנה וצילינדר — אנימציה בסיסית</div>
+      <div class="sub">ללא שסתומים, גלי זיזים וצינורות</div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+  <script>
+  (function(){
+    const container = document.getElementById('sketch-container');
+    let paused = false, speedMult = 1.5;
+    document.getElementById('speedSlider').oninput = function(){
+      speedMult = parseFloat(this.value);
+      document.getElementById('speedOut').textContent = speedMult.toFixed(1)+'×';
+    };
+    document.getElementById('pauseBtn').onclick = function(){
+      paused = !paused; this.textContent = paused ? 'המשך' : 'עצור';
+    };
+    new p5(function(p){
+      const W=420, H=620;
+      let angle=0;
+      const crankR=43, rodLen=160, cx=W/2, cy=420;
+      const boreW=90, pistonH=54;
+      const cylinderTop=200;
+      const cylinderBot=cy-(rodLen-crankR)+pistonH;
+      const strokeNames=['יניקה','דחיסה','כוח','פליטה'];
+      const strokeColors=['#378ADD','#BA7517','#D85A30','#3B6D11'];
+
+      function pistonYOff(a){let s=Math.sin(a);return crankR*Math.cos(a)+Math.sqrt(rodLen*rodLen-crankR*crankR*s*s);}
+      function getStroke(a){let n=((a%(4*Math.PI))+4*Math.PI)%(4*Math.PI);return n<Math.PI?0:n<2*Math.PI?1:n<3*Math.PI?2:3;}
+
+      p.setup=function(){let c=p.createCanvas(W,H);c.parent('sketch-container');p.textFont('system-ui,sans-serif');};
+
+      p.draw=function(){
+        if(!paused) angle+=0.025*speedMult;
+        let stroke=getStroke(angle);
+        let norm=((angle%(4*Math.PI))+4*Math.PI)%(4*Math.PI);
+        let prog=(norm%Math.PI)/Math.PI;
+        p.background(30,35,45);
+        let pistonTop=cy-pistonYOff(angle);
+        drawCylinder();
+        drawPiston(pistonTop);
+        drawCrankshaft(angle);
+        drawConnectingRod(pistonTop+pistonH/2,angle);
+        drawLabel(stroke,prog,angle);
+      };
+
+      function drawCylinder(){
+        let wallW=21;
+        p.noStroke();
+        // דפנות צד
+        p.fill(70,78,95);
+        p.rect(cx-boreW/2-wallW, cylinderTop-14, wallW, cylinderBot-cylinderTop+14, 3);
+        p.rect(cx+boreW/2,        cylinderTop-14, wallW, cylinderBot-cylinderTop+14, 3);
+        // דופן עליונה — כמו הצדדים, ללא פתחים
+        p.rect(cx-boreW/2-wallW, cylinderTop-14, boreW+wallW*2, 14, 3,3,0,0);
+        // פנים הצילינדר
+        p.fill(42,48,62);
+        p.rect(cx-boreW/2, cylinderTop, boreW, cylinderBot-cylinderTop);
+      }
+
+      function drawPiston(py){
+        let pw=boreW-6;p.noStroke();
+        let ringSectionH=Math.round(pistonH*0.42);let skirtY=py+ringSectionH;let skirtH=pistonH-ringSectionH;
+        p.fill(158,170,185,255);p.rect(cx-pw/2,py,pw,pistonH-10,4,4,0,0);
+        p.fill(205,215,228,255);p.rect(cx-pw/4+2,py,pw/2-4,pistonH-10);
+        p.fill(100,110,125,255);p.rect(cx-pw/2,py,12,pistonH-10,4,0,0,0);p.fill(100,110,125,255);p.rect(cx+pw/2-12,py,12,pistonH-10,0,4,0,0);
+        p.fill(225,232,240,255);p.rect(cx-pw/2,py,pw,5,4,4,0,0);
+        for(let i=0;i<3;i++){let gy=py+7+i*7;p.fill(55,62,78,255);p.rect(cx-pw/2-3,gy,pw+6,4);p.fill(175,185,200,255);p.rect(cx-pw/2-3,gy,pw+6,2);p.fill(215,222,232,255);p.rect(cx-pw/2-3,gy,pw+6,1);}
+        let pkW=pw*0.62,pkH=pistonH*0.28,pkX=cx-pkW/2,pkY=py+pistonH*0.46;
+        p.fill(75,84,98,255);p.rect(pkX,pkY,pkW,pkH,5);p.fill(115,125,140,255);p.rect(pkX+2,pkY+2,pkW-4,pkH-4,4);
+        p.fill(80,88,102,255);p.ellipse(cx,pkY+pkH/2,22,22);p.fill(50,56,68,255);p.ellipse(cx,pkY+pkH/2,11,11);
+        p.noFill();p.stroke(60,68,82);p.strokeWeight(1);p.rect(pkX,pkY,pkW,pkH,5);p.noStroke();
+        p.fill(140,152,168,255);p.rect(cx-pw/2,skirtY,pw*0.28,skirtH);p.fill(195,205,218,255);p.rect(cx-pw/2+3,skirtY,pw*0.10,skirtH);
+        p.fill(140,152,168,255);p.rect(cx+pw/2-pw*0.28,skirtY,pw*0.28,skirtH);p.fill(195,205,218,255);p.rect(cx+pw/2-pw*0.28+3,skirtY,pw*0.10,skirtH);
+        p.fill(30,35,45,255);p.rect(cx-pw/2+pw*0.28,skirtY,pw-pw*0.56,skirtH);
+        p.fill(42,48,62,255);p.arc(cx,skirtY+2,pw*0.44,16,0,Math.PI);
+        p.noFill();p.stroke(72,82,98);p.strokeWeight(1);p.rect(cx-pw/2,py,pw,pistonH-10,4,4,0,0);
+      }
+
+      function drawCrankshaft(angle){
+        let outerD=(crankR+13)*2,innerD=(crankR-13)*2;
+        p.noStroke();p.fill(50,55,68,255);p.ellipse(cx,cy,outerD+8,outerD+8);p.fill(82,90,108,255);p.ellipse(cx,cy,outerD,outerD);
+        p.push();p.translate(cx,cy);p.rotate(angle);p.noStroke();
+        p.fill(55,62,78,255);p.ellipse(0,0,innerD+8,innerD+8);p.fill(38,43,56,255);p.ellipse(0,0,innerD,innerD);
+        p.fill(52,58,74,255);p.arc(0,0,innerD-4,innerD-4,-Math.PI*0.9,-Math.PI*0.1);
+        p.fill(55,62,80,255);p.ellipse(0,crankR*0.55,28,22);
+        p.fill(88,96,112,255);p.ellipse(0,-crankR,18,18);p.fill(150,162,178,255);p.ellipse(0,-crankR,14,14);
+        p.fill(200,210,224,255);p.arc(0,-crankR,12,12,Math.PI*1.1,Math.PI*1.8);p.fill(58,66,82,255);p.ellipse(0,-crankR,6,6);
+        p.pop();
+        p.noStroke();p.fill(95,105,122,255);p.ellipse(cx,cy,26,26);p.fill(120,132,150,255);p.arc(cx,cy,24,24,Math.PI*1.1,Math.PI*1.8);p.fill(48,54,68,255);p.ellipse(cx,cy,12,12);
+      }
+
+      function drawConnectingRod(pinY,angle){
+        let cpX=cx+crankR*Math.sin(angle),cpY=cy-crankR*Math.cos(angle);
+        let dx=cpX-cx,dy=cpY-pinY,len=Math.sqrt(dx*dx+dy*dy),nx=-dy/len,ny=dx/len;
+        function strip(o1,o2,r,g,b){p.noStroke();p.fill(r,g,b,255);p.beginShape();p.vertex(cx+nx*o1,pinY+ny*o1);p.vertex(cx+nx*o2,pinY+ny*o2);p.vertex(cpX+nx*o2,cpY+ny*o2);p.vertex(cpX+nx*o1,cpY+ny*o1);p.endShape(p.CLOSE);}
+        strip(-7,7,80,90,108);strip(-5.6,5.6,138,150,168);strip(-4.2,1.4,168,180,196);strip(-3.5,0,198,210,225);
+        p.noStroke();
+        p.fill(88,96,112,255);p.ellipse(cx,pinY,20,20);p.fill(150,162,178,255);p.ellipse(cx,pinY,15,15);p.fill(200,210,224,255);p.arc(cx,pinY,13,13,Math.PI*1.1,Math.PI*1.8);p.fill(58,66,82,255);p.ellipse(cx,pinY,6,6);
+        p.fill(88,96,112,255);p.ellipse(cpX,cpY,20,20);p.fill(150,162,178,255);p.ellipse(cpX,cpY,15,15);p.fill(200,210,224,255);p.arc(cpX,cpY,13,13,Math.PI*1.1,Math.PI*1.8);p.fill(58,66,82,255);p.ellipse(cpX,cpY,6,6);
+      }
+
+      function drawLabel(stroke,prog,angle){
+        let norm=((angle%(4*Math.PI))+4*Math.PI)%(4*Math.PI),cp=norm/(4*Math.PI);
+        p.noStroke();p.fill(p.color(strokeColors[stroke]));p.rect(cx-95,H-62,190,40,8);
+        p.fill(255,255,255,255);p.textAlign(p.CENTER,p.CENTER);p.textSize(18);p.textStyle(p.BOLD);
+        p.text((stroke+1)+'. '+strokeNames[stroke],cx,H-42);
+        p.noStroke();p.fill(50,55,70);p.rect(cx-95,H-18,190,6,3);
+        p.fill(p.color(strokeColors[stroke]));p.rect(cx-95,H-18,190*cp,6,3);
+        p.textSize(10);p.fill(130,135,150,255);p.textStyle(p.NORMAL);p.textAlign(p.RIGHT,p.CENTER);
+        p.text('θ = '+Math.round((angle*180/Math.PI)%720)+'°',W-12,H-42);
+      }
+
+    }, container);
+  })();
+  </script>
+
+</body>
+</html>

@@ -140,10 +140,46 @@
     <div class="section">
 
       <div class="article-content engine-intro">
-        <p>אז מה בעצם קורה בתוך המנוע כשהוא עובד, ואיך הוא מתרגם דלק לתנועה?</p>
-        <p>כשהמנוע עובד, דלק נכנס לתוך תא מתכת סגור. בתוך התא יש חלק קטן שנקרא מצת — הוא מייצר ניצוץ שמדליק את הדלק ויוצר פיצוץ קטן. 
-הפיצוץ הזה דוחף בכוח חלק שנקרא בוכנה. הבוכנה נעה מעלה ומטה ומחוברת לגל הארכובה — גל הארכובה ממיר את התנועה מעלה ומטה של הבוכנה לתנועה סיבובית שמגיעה בסוף לגלגלים. 
-כאן למטה יש הדמיה שממחישה הכל באופן ויזואלי.</p>
+        <p>אז מה בעצם קורה בתוך מנוע כשהוא עובד, ואיך דלק הופך לתנועה?</p>
+        <p>בתוך כל מנוע בעירה יש חלק בצורת גליל מתכת שנקרא בוכנה, הבוכנה נעה מעלה ומטה בתוך הצילינדר.
+הצילנדר הוא בעצם תא סגור בצורת צינור ובו כמה פתחים שתכף נסביר את תכליתם.
+(הקוטר של גליל הבוכנה מתאים בדיוק לקוטר של הצילינדר, וכך הבוכנה יכולה לזוז מעלה ומטה בתוך הצילינדר בלי רעידות ובעיות,
+בגלל שהצילינדר הוא בעצם תא סגור, כאשר הבוכנה יורדת למטה חלל הצילינדר גדל ונוצר בתוכו ואקום.
+וכאשר הבוכנה עולה חלל הצילינדר מצטמצם והאוויר שבתוכו נדחס.
+בחלק העליון של הצילינדר יש שלושה פתחים, פתח אחד שבו יושב הפלאג (המצת) כך שהוא חוסם את אותו הפתח וקצהו נמצא בתוך הצילינדר.
+ושני פתחים משמסוגלים להיפתח ולהיסגר תוך כדי עבודת המנוע, והם נקראים השסתומים.</p>
+        <p>אמרנו שכאשר הבוכנה יורדת נוצר ואקום בצילינדר, במקביל לירידת הבוכנה נפתח אחד מהשסתומים שמחובר למערכת הדלק, ובגלל הואקום שנוצר
+עם ירידת הבוכנה דלק ואוויר נמשכים פנימה לתוך הצילינדר.
+אחרי שהבוכנה מגיעה לנקודה הכי נמוכה שלה היא מתחילה לעלות חזרה, כשהיא עולה שני השסתומים סגורים ותערובת הדלק והאוויר שנכנסה קודם לצילינדר נדחסת.
+כשהבוכנה מגיע לנקודה הכי גבוהה שלה בצילינדר הפלאג נותן ניצוץ שמדליק את הדלק שבתוך חלל הצילינדר.
+שריפת הדלק יוצרת פיצוץ שבעקבותיו הבוכנה נדחפת בכוח למטה ומגיעה שוב לנקודה הכי נמוכה שלה.
+כשהבוכנה מגיעה לתחתית היא מתחילה לעלות חזרה, בשלב הזה נפתח השסתום השני (שסתום הפליטה) שמחובר לאגזוז, ודרכו הגזים והעשן שנוצרו בעקבות השריפה נפלטים החוצה.</p>
+        <p>אבל מה גורם לבוכנה לעלות ולרדת בתוך הצילינדר?</p>
+
+        <div style="display:flex; gap:1.5rem; align-items:flex-start; flex-wrap:wrap; margin: 1.5rem 0;">
+          <div class="anim-wrapper" style="flex:0 0 auto;">
+            <div id="sketch-simple"></div>
+            <div class="anim-controls">
+              <label>מהירות</label>
+              <input type="range" min="0.5" max="5" step="0.1" value="1.5" id="speedSlider2">
+              <span id="speedOut2">1.5×</span>
+              <button id="pauseBtn2">עצור</button>
+            </div>
+          </div>
+          <img src="../engine-diagram.svg" alt="חתך צילינדר עם שמות חלקים" style="display:block; height:510px; width:auto; border-radius:var(--radius); border:1px solid var(--dark4);">
+        </div>
+
+        <p>כמו שרואים כאן למעלה הבוכנה מחוברת אל מוט ששמו הטלטל והמוט הזה מחובר בחלקו התחתון לגלגל שנקרא הקראנק (גל הארכובה בעברית).<br>כאשר הבוכנה יורדת ועולה המוט מסובב את הקראנק, וכך בעצם כאשר הבוכנה נדחפת בחוזקה מטה היא גם עולה בחוזקה מעלה כי גל הארכובה ממיר את הדחיפה כלפי מטה לדחיפה כלפי מעלה.</p>
+
+        <p>כמו שאמרנו, הצילינדר הוא חלל סגור, ההדמיות האלה נותנות מבט פנימי לתוכו אבל במציאות כשנסתכל על מנוע שלם הוא יראה לנו כבלוק מתכת סגור.<br>כך יראה מנוע של אופנוע מבחוץ ומבפנים:</p>
+
+        <div style="display:flex; gap:1.5rem; align-items:flex-start; flex-wrap:wrap; margin: 1.5rem 0;">
+          <img src="../images/engine-cutaway.png" alt="מנוע אופנוע חתוך עם שמות חלקים" style="height:420px; width:auto; border-radius:var(--radius); border:1px solid var(--dark4);">
+          <img src="../images/engine-outside.jpg" alt="מנוע אופנוע מבחוץ" style="height:420px; width:auto; border-radius:var(--radius); border:1px solid var(--dark4);">
+        </div>
+
+        <p>כשהמנוע עובד הבוכנה עולה ויורדת בתוך הצילינדר אלפי פעמים בדקה, והיא עושה זאת במחזורים של ארבע פעולות:<br>ירידה - עלייה - ירידה - עלייה.
+המחזור הזה של ארבע תנועות נקרא ארבע הפעימות:</p>
       </div>
 
       <!-- 4 strokes -->
@@ -189,6 +225,116 @@
         </div>
       </div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+      <script>
+      (function(){
+        const container2 = document.getElementById('sketch-simple');
+        let paused2 = false, speedMult2 = 1.5;
+        document.getElementById('speedSlider2').oninput = function(){
+          speedMult2 = parseFloat(this.value);
+          document.getElementById('speedOut2').textContent = speedMult2.toFixed(1)+'×';
+        };
+        document.getElementById('pauseBtn2').onclick = function(){
+          paused2 = !paused2; this.textContent = paused2 ? 'המשך' : 'עצור';
+        };
+        new p5(function(p){
+          const W=420, H=620;
+          const cW=310, cH=458;
+          const SC=cW/W;
+          let angle=0;
+          const crankR=43, rodLen=160, cx=W/2, cy=420;
+          const boreW=90, pistonH=54;
+          const cylinderTop=200;
+          const cylinderBot=cy-(rodLen-crankR)+pistonH;
+          const strokeNames=['יניקה','דחיסה','כוח','פליטה'];
+          const strokeColors=['#378ADD','#BA7517','#D85A30','#3B6D11'];
+
+          function pistonYOff(a){let s=Math.sin(a);return crankR*Math.cos(a)+Math.sqrt(rodLen*rodLen-crankR*crankR*s*s);}
+          function getStroke(a){let n=((a%(4*Math.PI))+4*Math.PI)%(4*Math.PI);return n<Math.PI?0:n<2*Math.PI?1:n<3*Math.PI?2:3;}
+
+          p.setup=function(){let c=p.createCanvas(cW,cH);c.parent('sketch-simple');p.textFont('system-ui,sans-serif');};
+
+          p.draw=function(){
+            if(!paused2) angle+=0.025*speedMult2;
+            let stroke=getStroke(angle);
+            let norm=((angle%(4*Math.PI))+4*Math.PI)%(4*Math.PI);
+            let prog=(norm%Math.PI)/Math.PI;
+            p.background(30,35,45);
+            p.scale(SC);
+            let pistonTop=cy-pistonYOff(angle);
+            drawCylinder();
+            drawPiston(pistonTop);
+            drawCrankshaft(angle);
+            drawConnectingRod(pistonTop+pistonH/2,angle);
+            drawLabel(stroke,prog,angle);
+          };
+
+          function drawCylinder(){
+            let wallW=21;
+            p.noStroke();
+            p.fill(70,78,95);
+            p.rect(cx-boreW/2-wallW, cylinderTop-14, wallW, cylinderBot-cylinderTop+14, 3);
+            p.rect(cx+boreW/2,        cylinderTop-14, wallW, cylinderBot-cylinderTop+14, 3);
+            p.rect(cx-boreW/2-wallW, cylinderTop-14, boreW+wallW*2, 14, 3,3,0,0);
+            p.fill(42,48,62);
+            p.rect(cx-boreW/2, cylinderTop, boreW, cylinderBot-cylinderTop);
+          }
+
+          function drawPiston(py){
+            let pw=boreW-6;p.noStroke();
+            let ringSectionH=Math.round(pistonH*0.42);let skirtY=py+ringSectionH;let skirtH=pistonH-ringSectionH;
+            p.fill(158,170,185,255);p.rect(cx-pw/2,py,pw,pistonH-10,4,4,0,0);
+            p.fill(205,215,228,255);p.rect(cx-pw/4+2,py,pw/2-4,pistonH-10);
+            p.fill(100,110,125,255);p.rect(cx-pw/2,py,12,pistonH-10,4,0,0,0);p.fill(100,110,125,255);p.rect(cx+pw/2-12,py,12,pistonH-10,0,4,0,0);
+            p.fill(225,232,240,255);p.rect(cx-pw/2,py,pw,5,4,4,0,0);
+            for(let i=0;i<3;i++){let gy=py+7+i*7;p.fill(55,62,78,255);p.rect(cx-pw/2-3,gy,pw+6,4);p.fill(175,185,200,255);p.rect(cx-pw/2-3,gy,pw+6,2);p.fill(215,222,232,255);p.rect(cx-pw/2-3,gy,pw+6,1);}
+            let pkW=pw*0.62,pkH=pistonH*0.28,pkX=cx-pkW/2,pkY=py+pistonH*0.46;
+            p.fill(75,84,98,255);p.rect(pkX,pkY,pkW,pkH,5);p.fill(115,125,140,255);p.rect(pkX+2,pkY+2,pkW-4,pkH-4,4);
+            p.fill(80,88,102,255);p.ellipse(cx,pkY+pkH/2,22,22);p.fill(50,56,68,255);p.ellipse(cx,pkY+pkH/2,11,11);
+            p.noFill();p.stroke(60,68,82);p.strokeWeight(1);p.rect(pkX,pkY,pkW,pkH,5);p.noStroke();
+            p.fill(140,152,168,255);p.rect(cx-pw/2,skirtY,pw*0.28,skirtH);p.fill(195,205,218,255);p.rect(cx-pw/2+3,skirtY,pw*0.10,skirtH);
+            p.fill(140,152,168,255);p.rect(cx+pw/2-pw*0.28,skirtY,pw*0.28,skirtH);p.fill(195,205,218,255);p.rect(cx+pw/2-pw*0.28+3,skirtY,pw*0.10,skirtH);
+            p.fill(30,35,45,255);p.rect(cx-pw/2+pw*0.28,skirtY,pw-pw*0.56,skirtH);
+            p.fill(42,48,62,255);p.arc(cx,skirtY+2,pw*0.44,16,0,Math.PI);
+            p.noFill();p.stroke(72,82,98);p.strokeWeight(1);p.rect(cx-pw/2,py,pw,pistonH-10,4,4,0,0);
+          }
+
+          function drawCrankshaft(angle){
+            let outerD=(crankR+13)*2,innerD=(crankR-13)*2;
+            p.noStroke();p.fill(50,55,68,255);p.ellipse(cx,cy,outerD+8,outerD+8);p.fill(82,90,108,255);p.ellipse(cx,cy,outerD,outerD);
+            p.push();p.translate(cx,cy);p.rotate(angle);p.noStroke();
+            p.fill(55,62,78,255);p.ellipse(0,0,innerD+8,innerD+8);p.fill(38,43,56,255);p.ellipse(0,0,innerD,innerD);
+            p.fill(52,58,74,255);p.arc(0,0,innerD-4,innerD-4,-Math.PI*0.9,-Math.PI*0.1);
+            p.fill(55,62,80,255);p.ellipse(0,crankR*0.55,28,22);
+            p.fill(88,96,112,255);p.ellipse(0,-crankR,18,18);p.fill(150,162,178,255);p.ellipse(0,-crankR,14,14);
+            p.fill(200,210,224,255);p.arc(0,-crankR,12,12,Math.PI*1.1,Math.PI*1.8);p.fill(58,66,82,255);p.ellipse(0,-crankR,6,6);
+            p.pop();
+            p.noStroke();p.fill(95,105,122,255);p.ellipse(cx,cy,26,26);p.fill(120,132,150,255);p.arc(cx,cy,24,24,Math.PI*1.1,Math.PI*1.8);p.fill(48,54,68,255);p.ellipse(cx,cy,12,12);
+          }
+
+          function drawConnectingRod(pinY,angle){
+            let cpX=cx+crankR*Math.sin(angle),cpY=cy-crankR*Math.cos(angle);
+            let dx=cpX-cx,dy=cpY-pinY,len=Math.sqrt(dx*dx+dy*dy),nx=-dy/len,ny=dx/len;
+            function strip(o1,o2,r,g,b){p.noStroke();p.fill(r,g,b,255);p.beginShape();p.vertex(cx+nx*o1,pinY+ny*o1);p.vertex(cx+nx*o2,pinY+ny*o2);p.vertex(cpX+nx*o2,cpY+ny*o2);p.vertex(cpX+nx*o1,cpY+ny*o1);p.endShape(p.CLOSE);}
+            strip(-7,7,80,90,108);strip(-5.6,5.6,138,150,168);strip(-4.2,1.4,168,180,196);strip(-3.5,0,198,210,225);
+            p.noStroke();
+            p.fill(88,96,112,255);p.ellipse(cx,pinY,20,20);p.fill(150,162,178,255);p.ellipse(cx,pinY,15,15);p.fill(200,210,224,255);p.arc(cx,pinY,13,13,Math.PI*1.1,Math.PI*1.8);p.fill(58,66,82,255);p.ellipse(cx,pinY,6,6);
+            p.fill(88,96,112,255);p.ellipse(cpX,cpY,20,20);p.fill(150,162,178,255);p.ellipse(cpX,cpY,15,15);p.fill(200,210,224,255);p.arc(cpX,cpY,13,13,Math.PI*1.1,Math.PI*1.8);p.fill(58,66,82,255);p.ellipse(cpX,cpY,6,6);
+          }
+
+          function drawLabel(stroke,prog,angle){
+            let norm=((angle%(4*Math.PI))+4*Math.PI)%(4*Math.PI),cp=norm/(4*Math.PI);
+            p.noStroke();p.fill(p.color(strokeColors[stroke]));p.rect(cx-95,H-62,190,40,8);
+            p.fill(255,255,255,255);p.textAlign(p.CENTER,p.CENTER);p.textSize(18);p.textStyle(p.BOLD);
+            p.text((stroke+1)+'. '+strokeNames[stroke],cx,H-42);
+            p.noStroke();p.fill(50,55,70);p.rect(cx-95,H-18,190,6,3);
+            p.fill(p.color(strokeColors[stroke]));p.rect(cx-95,H-18,190*cp,6,3);
+            p.textSize(10);p.fill(130,135,150,255);p.textStyle(p.NORMAL);p.textAlign(p.RIGHT,p.CENTER);
+            p.text('θ = '+Math.round((angle*180/Math.PI)%720)+'°',W-12,H-42);
+          }
+
+        }, container2);
+      })();
+      </script>
       <script>
       (function(){
         const container = document.getElementById('sketch-container');
@@ -441,8 +587,23 @@
       })();
       </script>
 
-      <div style="text-align:center; margin: 2rem 0;">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/Pu7g3uIG6Zo?si=opPaTvbDlupMOm5s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <div class="article-content" style="margin: 2rem 0 1rem;">
+        <p>כמו שרואים כאן באנימציה, על השסתומים מורכבים קפיצים שמושכים אותם תמיד למעלה ושומרים את השסתומים סגורים.
+מעל הקפיצים האלה יושבים גלי הזיזים (הקמשאפטים), שהם חלקים בצורת אליפסה שמסתובבים על צירם.
+כאשר החלק המחודד של האליפסה בא במגע עם קפיץ השסתום, הוא מכווץ את הקפיץ ודוחף את השסתום למטה ובכך בעצם פותח אותו.</p>
+        <p>הקמשאפטים מקבלים את התנועה שמסובבת את צירם מהקראנק ע"י שרשרת (או רצועה), שמחוברת בצד אחד לקראנק ובצד שני לגלגל שיניים שמחובר לציר הקמשאפטים.
+בפרק הטיימינג נצלול לעומק ההבנה של המערכת הזאת ואיך בדיוק היא עובדת, בינתיים רק זכרו:<br>
+כל עוד הבוכנה עולה ויורדת — הקראנק מסתובב ומסובב איתו את המערכת שפותחת וסוגרת את השסתומים.</p>
+      </div>
+
+      <div style="max-width:720px; margin:2rem auto; border-radius:10px; overflow:hidden;">
+        <iframe width="100%" height="405" src="https://www.youtube.com/embed/Pu7g3uIG6Zo?si=opPaTvbDlupMOm5s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+
+      <div class="article-content" style="margin-top: 0;">
+        <p style="margin-bottom: 0;">במנועים קטנים יש צילינדר אחד, לדוגמא באופנועי שטח וקטנועים, אבל יכול להיות יותר — יש גם אופנועים עם 3 צילינדרים.
+ברכבים בד"כ יהיה 3 צילינדרים ומעלה עד 8, וככל שיש יותר צילינדרים ושנפח הצילינדרים יותר גדול, ככה המנוע יהיה חזק יותר.
+בכל מנוע תמיד הטלטלים של כל הבוכנות יהיו מחוברים לאותו קראנק — ניתן לראות את זה טוב בהדמיה בדף הטיימינג.</p>
       </div>
 
       <!-- Article -->
@@ -477,29 +638,25 @@
       <div class="divider"></div>
       <div class="systems-grid">
 
-        <a class="system-card" href="starter.html">
-          <div class="card-icon">🔑</div>
+        <a class="system-card system-card--starter" href="starter.html">
           <div class="card-title">הסטארטר</div>
           <div class="card-desc">איך המנוע מתניע — מהמפתח, דרך הממסר, עד שגל הארכובה מסתובב לבד.</div>
           <div class="card-tag">📄 מאמר</div>
         </a>
 
-        <a class="system-card" href="timing.html">
-          <div class="card-icon">⏱️</div>
+        <a class="system-card system-card--timing" href="timing.html">
           <div class="card-title">מערכת הטיימינג</div>
           <div class="card-desc">רצועת הטיימינג וגלי הזיזים — מה שולט על פתיחת השסתומים בדיוק המושלם?</div>
           <div class="card-tag">📄 מאמר</div>
         </a>
 
-        <a class="system-card" href="ignition.html">
-          <div class="card-icon">⚡</div>
+        <a class="system-card system-card--ignition" href="ignition.html">
           <div class="card-title">מערכת ההצתה</div>
           <div class="card-desc">מהו הפלאג ואיך הניצוץ נוצר בדיוק ברגע הנכון.</div>
           <div class="card-tag">📄 מאמר</div>
         </a>
 
-        <a class="system-card" href="fuel.html">
-          <div class="card-icon">⛽</div>
+        <a class="system-card system-card--fuel-engine" href="fuel.html">
           <div class="card-title">הזרקת דלק / קרבורטור</div>
           <div class="card-desc">איך מגיע הדלק בכמות הנכונה לתוך תא הבעירה — מזרקים מול קרבורטור.</div>
           <div class="card-tag">📄 מאמר</div>
